@@ -1,9 +1,9 @@
 import Sequelize from "sequelize";
 
 export const sequelize = new Sequelize(
-  "projectsdb", // db name,
+  "api", // db name,
   "postgres", // username
-  "mysecretpassword", // password
+  "12345", // password
   {
     host: "localhost",
     dialect: "postgres",

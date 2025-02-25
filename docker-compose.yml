@@ -1,0 +1,34 @@
+services:
+  node_app:
+    build: .
+    image: dmbr28/nodejs_live_app
+    ports:
+      - "4000:3000"
+    environment:
+      - PG_DB=api
+      - PG_USER=postgres
+      - PG_PASSWORD=12345
+      - PG_HOST=apinode_db
+    restart: always
+    depends_on:
+      apinode_db:
+        condition: service_healthy
+
+  apinode_db:
+    image: postgres:14.16
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=api
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=12345
+    volumes:
+      - node_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d postgres"]
+      interval: 10s
+      retries: 5
+      start_period: 10s
+
+volumes:
+  node_db_data: {}
